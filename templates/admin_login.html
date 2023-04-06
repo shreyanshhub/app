@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login{% endblock %}
+
+{% block content %}
+
+
+<h1>Admin Login Page</h1>
+{% with messsages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <p>
+        {{message}}
+      </p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<form action="#" method = "POST" >
+  <p>Name:</p>
+  <input type="text" name="user_name" placeholder="Enter your username" value="{{user_name if user_name}}"/>
+  <p>Password:</p>
+  <input type="password" name="password" placeholder="Enter your password" />
+  <input type="submit" name="submit" />
+</form>
+
+{% endblock %}

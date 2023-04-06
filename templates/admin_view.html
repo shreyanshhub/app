@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %} Admin's Dashboard {% endblock %}
+
+{% block content %}
+{% with messsages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<p>
+  {{message}}
+</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<h2>Hello {{user_name}} ,welcomee!!!!</h2>
+{% if venues %}
+
+
+{% for venue in venues %}
+<div class="row" >
+<div class="card" >
+
+
+<div class = "card-header" >
+
+  Venue Name : {{venue.venue_name}}
+
+</div>
+
+<div class="card-body" >
+
+  Venue Location : {{venue.venue_location}}
+
+<p>
+
+  Venue Capacity : {{venue.venue_capacity}}
+</p>
+{% if venue.shows %}
+<div class = "card" >
+
+{% for show in venue.shows %}
+<div class="card-header" >
+
+  Show Name :{{show.show_name}}
+</div>
+<div class="card-body" >
+
+
+<p>
+  Show Timing : {{show.show_timing}}
+</p>
+<p>
+  <a href="/edit_show/{{venue.id}}/{{show.show_name}}/{{show.show_timing}}" > Edit show</a>
+
+  <a href = "/delete_show/{{venue.id}}/{{show.show_name}}/{{show.show_timing}}" > Delete show </a>
+
+
+</p>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+<p>
+  <a href ="/create_show/{{venue.id}}" >Create Show</a>
+</p>
+</div>
+{% endfor %}
+</div>
+
+</div>
+{% endif %}
+<p>
+   <a href = "/logout" >Logout</a>
+</p>
+{% endblock %}

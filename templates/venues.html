@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Venues{% endblock %}
+
+{% block content %}
+<form action="#" method = "POST" >
+
+  <p>
+    Venue Name:
+  </p>
+  <input type="text" name="venue_name"  />
+  <p>
+
+    Venue Location:
+  </p>
+  <input type = "text" name = "venue_location" />
+  <p>
+    Venue Capacity:
+  </p>
+  <input type = "number" name="venue_capacity" />
+  <input type="submit" name= "submit" />
+</form>
+{% endblock %}
