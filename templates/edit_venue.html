@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %} Edit Venue {% endblock %}
+
+{% block content %}
+<h1>Edit Venue</h1>
+<form action="#" method="post" >
+
+  <p>
+    New Name :
+    <input type="text" name="venue_name"  />
+  </p>
+  <p>
+
+    New Location :
+    <input type="text" name="venue_location"  />
+  </p>
+  <p>
+
+    New Capacity:
+    <input type="number" name="venue_capacity"  />
+  </p>
+  <p>
+    New Recliner Price:
+    <input type="number" name="recliner_row_price"  />
+  </p>
+  <p>
+    New Middle Row Price:
+
+    <input type="number" name="middle_row_price"  />
+  </p>
+  <p>
+    New Front Row Price
+    <input type="number" name="front_row_price"  />
+  </p>
+  <input type="submit" name="submit"  />
+</form>
+{% endblock %}

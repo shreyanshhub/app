@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}My shows {% endblock %}
+
+{% block content %}
+<h1>Welcome </h1>
+<form action="#" method="post" >
+  <p>
+  Seats Price:
+  </p>
+<p>
+
+  Recliner Seat Price : {{venue.recliner_row_price}}
+</p>
+<p>
+  Middle Row Price : {{venue.middle_row_price}}
+</p>
+<p>
+  Front Row Price : {{venue.front_row_price}}
+</p>
+<p>
+  Select seat :
+</p>
+<select id="show_price" name = "show_price">
+  <option value="Recliner:{{venue.recliner_row_price}}" > Recliner:
+    {{venue.recliner_row_price}}
+  </option>
+  <option value="Middle:{{venue.middle_row_price}}" > Middle :
+    {{venue.middle_row_price}}
+  </option>
+  <option value="Front:{{venue.front_row_price}}" > Front :
+    {{venue.front_row_price}}
+  </option>
+</select>
+<p>
+  No.of tickets :
+</p>
+<input type ="number" name="number_of_tickets"  />
+  <input type="submit" name="submit" value="Confirm"  />
+</form>
+
+
+{% endblock %}

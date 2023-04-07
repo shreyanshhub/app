@@ -17,59 +17,73 @@
 
 
 {% for venue in venues %}
-<div class="row" >
-<div class="card" >
+<div class="row">
+  <div class="card">
 
 
-<div class = "card-header" >
+    <div class="card-header">
 
-  Venue Name : {{venue.venue_name}}
+      Venue Name : {{venue.venue_name}}
 
-</div>
+    </div>
 
-<div class="card-body" >
+    <div class="card-body">
 
-  Venue Location : {{venue.venue_location}}
+      Venue Location : {{venue.venue_location}}
 
-<p>
+      <p>
 
-  Venue Capacity : {{venue.venue_capacity}}
-</p>
-{% if venue.shows %}
-<div class = "card" >
+        Venue Capacity : {{venue.seats_remaining}}
+      </p>
+      <p>
+        Recliner Row Price : {{venue.recliner_row_price}}
+      </p>
+      <p>
+        Middle Row Price : {{ venue.middle_row_price }}
+      </p>
+      <p>
+        Front Row Price : {{venue.front_row_price}}
+      </p>
+      {% if venue.shows %}
+      <div class="card">
 
-{% for show in venue.shows %}
-<div class="card-header" >
+        {% for show in venue.shows %}
+        <div class="card-header">
 
-  Show Name :{{show.show_name}}
-</div>
-<div class="card-body" >
-
-
-<p>
-  Show Timing : {{show.show_timing}}
-</p>
-<p>
-  <a href="/edit_show/{{venue.id}}/{{show.show_name}}/{{show.show_timing}}" > Edit show</a>
-
-  <a href = "/delete_show/{{venue.id}}/{{show.show_name}}/{{show.show_timing}}" > Delete show </a>
+          Show Name :{{show.show_name}}
+        </div>
+        <div class="card-body">
 
 
-</p>
-</div>
-{% endfor %}
+          <p>
+            Show Timing : {{show.show_timing}}
+          </p>
+
+          <p>
+
+            <a href="/edit_show/{{venue.id}}/{{show.show_name}}/{{show.show_timing}}" class="btn btn-info"> Edit show</a>
+
+            <a href="/delete_show/{{venue.id}}/{{show.show_name}}/{{show.show_timing}}" class="btn btn-danger"> Delete show </a>
+
+
+          </p>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      <p>
+        <a href="/create_show/{{venue.id}}" class="btn btn-info" style="margin-top:10px;">Create Show</a>
+      </p>
+    </div>
+    <p>
+      <a href="/edit_venue/{{venue.id}}" class="btn btn-info"> Edit Venue</a>
+    </p>
+    {% endfor %}
+  </div>
+
 </div>
 {% endif %}
 <p>
-  <a href ="/create_show/{{venue.id}}" >Create Show</a>
-</p>
-</div>
-{% endfor %}
-</div>
-
-</div>
-{% endif %}
-<p>
-   <a href = "/logout" >Logout</a>
+  <a href="/logout" class="btn btn-success" style="margin-top:10px;">Logout</a>
 </p>
 {% endblock %}

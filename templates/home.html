@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %} User Dashboard {% endblock %}
+
+{% block content %}
+<h1>Welcome {{user.username}}</h1>
+<a href="/user_logout" >Logout</a>
+<a href="/my_bookings/{{user.id}}" >My bookings</a>
+{% if venues %}
+
+  {% for venue in venues %}
+  <div class="row">
+
+
+  <div class="card">
+
+    <div class="card-header" >
+
+
+    Venue Name : {{venue.venue_name}}
+    </div>
+    <div class="card-body" >
+
+    <p>
+
+    Venue Location : {{venue.venue_location}}
+    </p>
+    <p>
+
+    Recliner Row Price : {{venue.recliner_row_price}}
+    </p>
+    <p>
+    Middle Row Price : {{venue.middle_row_price}}
+    </p>
+    <p>
+    Front Row Price : {{venue.front_row_price}}
+    </p>
+
+
+  {% if venue.shows %}
+  <div class= "card">
+    {% for show in venue.shows %}
+    <div class="card-header">
+    <p>
+      Show Name : {{show.show_name}}
+
+    </p>
+
+    </div>
+    <div class="card-body">
+    <p>
+      Show Timing : {{show.show_timing}}
+    </p>
+    <a href="/book_show/{{user.id}}/{{venue.id}}/{{show.id}}" >Book Show</a>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  </div>
+  {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

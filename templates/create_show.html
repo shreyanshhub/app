@@ -14,6 +14,20 @@
     Show Timing:
   </p>
   <input type="text" name="show_timing"  />
+  <p>
+    Show Price:
+  </p>
+  <select id="show_price" name = "cars">
+    <option value="Recliner:{{venue.recliner_row_price}}" >
+      {{venue.recliner_row_price}}
+    </option>
+    <option value="Middle:{{venue.middle_row_price}}" >
+      {{venue.middle_row_price}}
+    </option>
+    <option value="Front:{{venue.front_row_price}}" >
+      {{venue.front_row_price}}
+    </option>
+  </select>
   <input type="submit" name="submit"  />
 
 </form>

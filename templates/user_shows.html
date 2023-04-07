@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}My bookings{% endblock %}
+
+{% block content %}
+<h1>My bookings</h1>
+{% if shows %}
+{% for show in shows %}
+<div class="card" >
+  <div class="card-header" >
+    Show Name : {{show.show_name}}
+  </div>
+  <div class= "card-body" >
+    Show Timings : {{show.show_timing}}
+    <p>
+
+      Seats Remaining : {{venue.seats_remaining}}
+    </p>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

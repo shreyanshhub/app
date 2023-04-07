@@ -6,15 +6,8 @@
 
 
 <h1>Admin Login Page</h1>
-{% with messsages = get_flashed_messages() %}
-  {% if messages %}
-    {% for message in messages %}
-      <p>
-        {{message}}
-      </p>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+<div class="card" style = "margin-left:30%;margin-right:30%;margin-top:10%;padding-left:10%;padding-top:5%;padding-bottom:5%;" >
+
 <form action="#" method = "POST" >
   <p>Name:</p>
   <input type="text" name="user_name" placeholder="Enter your username" value="{{user_name if user_name}}"/>
@@ -22,5 +15,6 @@
   <input type="password" name="password" placeholder="Enter your password" />
   <input type="submit" name="submit" />
 </form>
+</div>
 
 {% endblock %}
