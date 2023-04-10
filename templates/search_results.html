@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Search Results</h1>
+
+  {% if shows%}
+    <p>Showing {{ results|length }} result(s) for "{{ query }}"</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Show Name</th>
+          <th>Venue Name</th>
+          <th>Show Timing</th>
+          <th>Show Price</th>
+          <th>Average Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for show in shows %}
+          <tr>
+            <td>{{ show.show_name }}</td>
+            <td>{{ show.venue.venue_name }}</td>
+            <td>{{ show.show_timing }}</td>
+            <td>{{ show.show_price }}</td>
+            <td>{{ show.average_rating }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No results found for "{{ query }}"</p>
+  {% endif %}
+{% endblock %}

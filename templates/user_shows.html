@@ -12,10 +12,7 @@
   </div>
   <div class= "card-body" >
     Show Timings : {{show.show_timing}}
-    <p>
-
-      Seats Remaining : {{venue.seats_remaining}}
-    </p>
+    <a href="/rate_show/{{user.id}}/{{show.id}}" >Rate Show</a>
   </div>
 </div>
 {% endfor %}

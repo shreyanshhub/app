@@ -8,7 +8,7 @@
 
     </style>
   </head>
-  <body style="background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);">
+  <body style="background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);font-family:helvetica,sans-serif;">
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark" style="background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Ticket Show Application</a>
@@ -18,14 +18,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/logout">Logout</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/admin_login">Login</a>
-        </li>
+
+
         <li class="nav-item">
           <a class="nav-link" href="/create_venue">Create Venue</a>
         </li>
@@ -41,10 +37,38 @@
         </div>
       </li>
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      <form method="get" action="{{ url_for('search') }}">
+  <label for="venue">Search by venue:</label>
+  <select name="venue" id="venue">
+    <option value="">All venues</option>
+    {% for venue in venues %}
+      <option value="{{ venue.id }}">{{ venue.venue_name }}</option>
+    {% endfor %}
+  </select>
+  <br>
+
+  <label for="rating">Search by rating:</label>
+  <select name="rating" id="rating">
+    <option value="">All ratings</option>
+    {% for show in shows %}
+      <option value="{{ rating }}">{{ show.average_rating }}</option>
+    {% endfor %}
+  </select>
+  <br>
+
+  <label for="timing">Search by timing:</label>
+  <select name="timing" id="timing">
+    <option value="">All timings</option>
+    {% for show in shows %}
+      <option value="{{ timing }}">{{ show.show_timing }}</option>
+    {% endfor %}
+  </select>
+  <br>
+
+  <input type="submit" value="Search">
+</form>
+
+
     </div>
   </div>
 </nav>

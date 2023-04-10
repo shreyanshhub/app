@@ -1,5 +1,9 @@
 from flask import Flask,render_template,redirect,url_for,flash,request,session
 from flask_sqlalchemy import SQLAlchemy
+import json
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
@@ -45,6 +49,14 @@ class Show(db.Model):
     show_price = db.Column("show",db.Integer)
     show_id = db.Column(db.Integer,db.ForeignKey("venue.id"))
     users = db.relationship("User",secondary="user_show")
+    average_rating = db.Column(db.Float, default=None)
+
+    def update_average_rating(self):
+        ratings = [user_show.rating for user_show in self.show_users if user_show.rating is not None]
+        if len(ratings) == 0:
+            self.average_rating = None
+        else:
+            self.average_rating = sum(ratings) / len(ratings)
 
 
 
@@ -71,6 +83,10 @@ class User_show(db.Model):
     user_id = db.Column(db.Integer,db.ForeignKey("user.id"))
     show_id = db.Column(db.Integer,db.ForeignKey("show.id"))
 
+    rating = db.Column(db.Integer)
+
+    user = db.relationship("User", backref=db.backref("user_shows", cascade="all, delete-orphan"))
+    show = db.relationship("Show", backref=db.backref("show_users", cascade="all, delete-orphan"))
 
 @app.route("/admin_login",methods=["GET","POST"])
 def admin_login():
@@ -238,7 +254,8 @@ def user_login():
             session["user_password"] = user_password
             flash("User logged in successfully","info")
             venues = Venue.query.all()
-            return render_template("home.html",user=user,venues=venues)
+            shows = Show.query.all()
+            return render_template("home.html",user=user,venues=venues,shows=shows)
         else:
             flash("Incorrect Username or Password")
             return render_template("user_login.html")
@@ -267,12 +284,12 @@ def book_show(user_id,venue_id,show_pid):
         shows = user.booked_id
         ticket_price = request.form['show_price']
         no_of_tickets = request.form["number_of_tickets"]
-        venue = Venue.query.filter_by(id=venue_id)
-        if venue.seats_remaining >= no_of_tickets:
+        venue = Venue.query.filter_by(id=venue_id).first()
+        if int(venue.seats_remaining) >= int(no_of_tickets):
             flash(str(no_of_tickets)+"have been booked for the show" +str(show.show_name),"info")
-            venue.seats_remaining -= no_of_tickets
+            venue.seats_remaining -= int(no_of_tickets)
             db.session.commit()
-            return render_template("user_shows.html", user=user, shows=shows,seats_remaining=venue.seats_remaining)
+            return render_template("user_shows.html", user=user, shows=shows)
         else:
             flash(str(no_of_tickets)+ "are not available","info")
             venue = Venue.query.filter_by(id=venue_id).first()
@@ -288,7 +305,77 @@ def my_bookings(id):
     shows = user.booked_id
     return render_template("user_shows.html",user=user,shows=shows)
 
+@app.route("/rate_show/<user_id>/<show_id>",methods=["GET","POST"])
+def rate_show(user_id,show_id):
+    if request.method == "POST":
+        rating = int(request.form["rating"])
+        user_show = User_show.query.filter_by(user_id=user_id, show_id=show_id).first()
+        user_show.rating = rating
+        db.session.commit()
 
+        show = Show.query.get(show_id)
+        show.update_average_rating()
+        db.session.commit()
+
+        user = User.query.filter_by(id=user_id).first()
+        shows = user.booked_id
+        venues = Venue.query.all()
+        return render_template("user_shows.html",user=user,shows=shows,venues=venues)
+
+    else:
+        show = Show.query.get(show_id)
+        return render_template("rate_show.html",show=show)
+
+@app.route("/delete_venue/<venue_id>",methods=["GET","POST"])
+def delete_venue(venue_id):
+
+    if request.method == "POST":
+        venue = Venue.query.filter_by(id=venue_id).first()
+        db.session.delete(venue)
+        db.session.commit()
+        flash("Venue deleted successfully","info")
+        return redirect(url_for("admin_login"))
+    else:
+        return render_template("delete_venue.html")
+
+
+@app.route('/search')
+def search():
+    venue_id = request.args.get('venue')
+    rating = request.args.get('rating')
+    timing = request.args.get('timing')
+
+    shows = Show.query
+    if venue_id:
+        shows = shows.filter_by(show_id=venue_id)
+    if rating:
+        shows = shows.filter(Show.average_rating >= rating)
+    if timing:
+        shows = shows.filter_by(show_timing=timing)
+
+    venues = Venue.query.all()
+    return render_template('search_results.html', shows=shows,venues=venues)
+
+@app.route('/data_visualisation')
+def data():
+    venues = Venue.query.all()
+    venue_names = [venue.venue_name for venue in venues]
+    seats_remaining = [venue.seats_remaining for venue in venues]
+
+    plt.bar(venue_names, seats_remaining)
+    plt.title('Seats Remaining by Venue')
+    plt.xlabel('Venue')
+    plt.ylabel('Seats Remaining')
+    plt.xticks(rotation=45)
+
+    chart = plt.gcf()
+    chart.savefig('static/images/venues.png')
+
+    return render_template('data.html')
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 if __name__ == "__main__":
     with app.app_context():
